@@ -16,7 +16,7 @@ const Navbar = () => {
   return (
     <nav className='flex mx-auto sticky top-0 p-2 md:p-2 justify-between items-center backdrop-blur border border-b-gray-400/50 z-50'>
       <div className='font-bold text-xl mx-2 md:mx-4'>
-        <Link href={"/"}>SakshamWithWeb</Link>
+        <Link href={"http://webwithsaksham.com"}>SakshamWithWeb</Link>
       </div>
       <div className='flex'>
         <span className='hidden md:block'> <ModeToggle /></span>
