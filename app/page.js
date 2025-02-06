@@ -50,7 +50,7 @@ const Page = () => {
         {blogsData.map((item, index) => {
           return (
             <div className='border h-16 relative w-11/12 rounded-2xl flex justify-between items-center' key={index}>
-              <div className='overflow-auto h-full mx-2 scrollbar-thin border-r w-[95%] flex text-lg items-center'>
+              <div className='overflow-auto h-full md:mr-2 md:ml-2 mr-10 ml-2 scrollbar-thin border-r w-[95%] flex text-lg items-center'>
                 <Link href={`https://blog.webwithsaksham.com/${item.id}`} className='mx-2 whitespace-nowrap'>{item.title}</Link>
               </div>
               <div className='absolute top-4 right-2'>
