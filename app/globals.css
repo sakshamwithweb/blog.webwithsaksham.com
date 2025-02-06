@@ -73,3 +73,8 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+
+.prose :where(h2):not(:where([class~="not-prose"],[class~="not-prose"] *)){
+  margin: 0;
+}

@@ -84,8 +84,8 @@ export default function Page() {
   }
   return (
     <div className="min-h-screen flex justify-center">
-      <div className="md:w-[50%] min-h-screen flex flex-col gap-8 m-5">
-        <div className="mx-3 flex flex-col gap-3 text-center">
+      <div className="md:w-[50%] min-h-screen flex flex-col gap-8 md:m-5 m-3">
+        <div className="md:mx-3 flex flex-col gap-3 text-center">
           <h1 className="md:text-4xl text-2xl font-bold px-10">{blogdata?.title}</h1>
           <p className="font-semibold">{formatTimestamp(blogdata?.publishedTime)}</p>
         </div>
