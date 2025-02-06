@@ -21,7 +21,7 @@ const Navbar = () => {
       <div className='flex'>
         <span className='hidden md:block'> <ModeToggle /></span>
         {/*For Smaller device*/}
-        <div className='md:hidden mx-4'>
+        <div className='md:hidden'>
           <span className='mx-4'> <ModeToggle /></span>
           <Sheet>
             <SheetTrigger aria-label='hamburger'>
