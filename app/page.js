@@ -2,12 +2,31 @@
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { useToast } from '@/hooks/use-toast'
-import { EllipsisVertical, Link2Icon } from 'lucide-react'
+import { EllipsisVertical, Filter, Link2Icon } from 'lucide-react'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+
+const FilterPlaceholder = () => (
+  <div className='flex p-2 w-[150px] justify-center gap-5'>
+    <p className='text-lg font-bold'>Filter</p>
+    <Filter />
+  </div>
+);
 
 const Page = () => {
   const [blogsData, setBlogsData] = useState(null)
+  const [selectedBlogData,setSelectedBlogData] = useState(null)
+  const [categories, setCategories] = useState([])
+  const [category, setCategory] = useState("")
   const { toast } = useToast()
 
   useEffect(() => {
@@ -22,6 +41,7 @@ const Page = () => {
       const res = await req.json()
       if (res.success) {
         setBlogsData(res.data)
+        setSelectedBlogData(res.data)
       } else {
         toast({
           title: "❌ Something Went Wrong",
@@ -30,6 +50,45 @@ const Page = () => {
       }
     })()
   }, [])
+
+
+  useEffect(() => {
+    (async () => {
+      const req = await fetch(`/api/fetchCategories`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "applicaion/json"
+        },
+        body: JSON.stringify({})
+      })
+      const res = await req.json()
+      if (!res.success) {
+        toast({
+          title: "❌ Unable to fetch categories!!"
+        })
+        return
+      }
+      setCategories(res.data)
+    })()
+  }, [])
+
+  useEffect(() => {
+    if (category !== "") {
+      console.log(category)
+      if (category != "all") {
+        let specificArr = []
+        blogsData.map((item)=>{
+          if(item.categoryValue == category){
+            specificArr.push(item)
+          }
+        })
+        setSelectedBlogData(specificArr)
+      }else{
+        setSelectedBlogData(blogsData)
+      }
+    }
+  }, [category])
+
 
   if (!blogsData) {
     return <p className='m-2 text-center'>Loading...</p>
@@ -41,13 +100,27 @@ const Page = () => {
     )
   }
 
-  {/*when click at title so redirect to a page where show the blog*/ }
-
   return (
-    <div className='relative min-h-screen'>
+    <div className='relative min-h-screen flex flex-col items-center gap-6'>
       <h1 className='text-xl text-center font-bold'>Blogs</h1>
-      <div className='flex flex-col gap-6 py-10 w-full items-center'>
-        {blogsData.map((item, index) => {
+      <div className=''>
+        <Select value={category} onValueChange={(e) => setCategory(e)}>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder={<FilterPlaceholder />} />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>Categories</SelectLabel>
+              <SelectItem value="all">All</SelectItem>
+              {categories.map((category, index) => {
+                return <SelectItem key={index} value={category}>{category}</SelectItem>;
+              })}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </div>
+      <div className='flex flex-col gap-6 w-full items-center'>
+        {selectedBlogData.map((item, index) => {
           return (
             <div className='border h-16 relative w-11/12 rounded-2xl flex justify-between items-center' key={index}>
               <div className='overflow-auto h-full md:mr-2 md:ml-2 mr-10 ml-2 scrollbar-thin border-r w-[95%] flex text-lg items-center'>
@@ -61,9 +134,9 @@ const Page = () => {
                       navigator.clipboard.writeText(`https://blog.webwithsaksham.com/${item.id}`).then(() => {
                         toast({ description: `✅ Copied` });
                       })
-                      .catch(() => {
-                        toast({ description: `❌ Something went wrong` });
-                      });
+                        .catch(() => {
+                          toast({ description: `❌ Something went wrong` });
+                        });
                     }}>Save Link<Link2Icon /></DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
