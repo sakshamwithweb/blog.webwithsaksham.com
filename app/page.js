@@ -2,7 +2,7 @@
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { useToast } from '@/hooks/use-toast'
-import { EllipsisVertical, Filter, Link2Icon } from 'lucide-react'
+import { CircleHelp, EllipsisVertical, Filter, Kanban, Link2Icon } from 'lucide-react'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import {
@@ -14,6 +14,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import isEmail from 'validator/lib/isEmail';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { Label } from '@/components/ui/label'
 
 const FilterPlaceholder = () => (
   <div className='flex p-2 w-[150px] justify-center gap-5'>
@@ -22,11 +32,13 @@ const FilterPlaceholder = () => (
   </div>
 );
 
+
 const Page = () => {
   const [blogsData, setBlogsData] = useState(null)
-  const [selectedBlogData,setSelectedBlogData] = useState(null)
+  const [selectedBlogData, setSelectedBlogData] = useState(null)
   const [categories, setCategories] = useState([])
   const [category, setCategory] = useState("")
+  const [emailForSubscribe, setEmailForSubscribe] = useState("")
   const { toast } = useToast()
 
   useEffect(() => {
@@ -77,17 +89,43 @@ const Page = () => {
       console.log(category)
       if (category != "all") {
         let specificArr = []
-        blogsData.map((item)=>{
-          if(item.categoryValue == category){
+        blogsData.map((item) => {
+          if (item.categoryValue == category) {
             specificArr.push(item)
           }
         })
         setSelectedBlogData(specificArr)
-      }else{
+      } else {
         setSelectedBlogData(blogsData)
       }
     }
   }, [category])
+
+  const handleSubscribe = async () => {
+    if (emailForSubscribe.length == 0 || !isEmail(emailForSubscribe)) {
+      toast({
+        title: "❌ Enter valid email!!"
+      })
+      return
+    }
+    const req = await fetch(`/api/subscribe`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "applicaion/json"
+      },
+      body: JSON.stringify({ emailId: emailForSubscribe })
+    })
+    const res = await req.json()
+    if(!res.success){
+      toast({
+        title: "❌ Unable to Subscribe!!"
+      })
+      return
+    }
+    toast({
+      title: "✅ Subscribed!!"
+    })
+  }
 
 
   if (!blogsData) {
@@ -103,7 +141,7 @@ const Page = () => {
   return (
     <div className='relative min-h-screen flex flex-col items-center gap-6'>
       <h1 className='text-xl text-center font-bold'>Blogs</h1>
-      <div className=''>
+      <div className='w-full flex justify-around'>
         <Select value={category} onValueChange={(e) => setCategory(e)}>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder={<FilterPlaceholder />} />
@@ -118,6 +156,25 @@ const Page = () => {
             </SelectGroup>
           </SelectContent>
         </Select>
+        <div className=''>
+          <div className='flex items-center gap-2'>
+            <div>
+              <Label htmlFor="subscribe">Subscribe</Label>
+              <Input type="email" value={emailForSubscribe} onChange={(e) => { setEmailForSubscribe(e.target.value) }} name="subscribe" id="subscribe" placeholder="Enter Email id" />
+            </div>
+            <div>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger><CircleHelp /></TooltipTrigger>
+                  <TooltipContent>
+                    <p>Get Email when new post is posted by Saksham!</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+          </div>
+          <Button className="w-14" onClick={handleSubscribe}>Save</Button>
+        </div>
       </div>
       <div className='flex flex-col gap-6 w-full items-center'>
         {selectedBlogData.map((item, index) => {
