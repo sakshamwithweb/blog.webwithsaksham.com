@@ -39,6 +39,7 @@ const Page = () => {
   const [categories, setCategories] = useState([])
   const [category, setCategory] = useState("")
   const [emailForSubscribe, setEmailForSubscribe] = useState("")
+  const [busySubscribeBtn,setBusySubscribeBtn] = useState(false)
   const { toast } = useToast()
 
   useEffect(() => {
@@ -121,6 +122,7 @@ const Page = () => {
         })
         return
       }
+      setBusySubscribeBtn(true)
       const req = await fetch(`/api/subscribe`, {
         method: "POST",
         headers: {
@@ -133,11 +135,13 @@ const Page = () => {
         toast({
           title: "❌ Unable to Subscribe!!"
         })
+        setBusySubscribeBtn(false)
         return
       }
       toast({
         title: "✅ Subscribed!!"
       })
+      setBusySubscribeBtn(false)
     } catch (error) {
       toast({
         title: "❌ Unable to Subscribe!!"
@@ -191,7 +195,7 @@ const Page = () => {
               </TooltipProvider>
             </div>
           </div>
-          <Button className="w-14" onClick={handleSubscribe}>Save</Button>
+          <Button disabled={busySubscribeBtn} className="w-14" onClick={handleSubscribe}>Save</Button>
         </div>
       </div>
       <div className='flex flex-col gap-6 w-full items-center'>
