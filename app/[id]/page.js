@@ -30,26 +30,31 @@ export default function Page() {
   const { id } = useParams();
   const [blogdata, setBlogData] = useState(null)
   const { toast } = useToast()
-  const [htmlContent,setHtmlContent] = useState("")
+  const [htmlContent, setHtmlContent] = useState("")
 
   useEffect(() => {
     (async () => {
-      const req = await fetch(`/api/fetchBlog`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "applicaion/json"
-        },
-        body: JSON.stringify({ id: id })
-      })
-      const res = await req.json()
-      if (!res.success) {
-        toast({
-          title: `❌ ${res.message}`,
+      try {
+        const req = await fetch(`/api/fetchBlog`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "applicaion/json"
+          },
+          body: JSON.stringify({ id:id })
         })
-        return;
+        const res = await req.json()
+        if (!res.success) {
+          toast({
+            title: `❌ Either error or not found`,
+          })
+          return;
+        }
+        setBlogData(res.data)
+      } catch (error) {
+        toast({
+          title: `❌ Error at fetching Blog`,
+        })
       }
-      console.log(res.data)
-      setBlogData(res.data)
     })()
   }, [])
 

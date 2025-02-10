@@ -43,18 +43,25 @@ const Page = () => {
 
   useEffect(() => {
     (async () => {
-      const req = await fetch(`/api/fetchAllBlogs`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "applicaion/json"
-        },
-        body: JSON.stringify({})
-      })
-      const res = await req.json()
-      if (res.success) {
-        setBlogsData(res.data)
-        setSelectedBlogData(res.data)
-      } else {
+      try {
+        const req = await fetch(`/api/fetchAllBlogs`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "applicaion/json"
+          },
+          body: JSON.stringify({})
+        })
+        const res = await req.json()
+        if (res.success) {
+          setBlogsData(res.data)
+          setSelectedBlogData(res.data)
+        } else {
+          toast({
+            title: "❌ Something Went Wrong",
+            description: "Server Error!!",
+          })
+        }
+      } catch (error) {
         toast({
           title: "❌ Something Went Wrong",
           description: "Server Error!!",
@@ -66,27 +73,32 @@ const Page = () => {
 
   useEffect(() => {
     (async () => {
-      const req = await fetch(`/api/fetchCategories`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "applicaion/json"
-        },
-        body: JSON.stringify({})
-      })
-      const res = await req.json()
-      if (!res.success) {
+      try {
+        const req = await fetch(`/api/fetchCategories`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "applicaion/json"
+          },
+          body: JSON.stringify({})
+        })
+        const res = await req.json()
+        if (!res.success) {
+          toast({
+            title: "❌ Unable to fetch categories!!"
+          })
+          return
+        }
+        setCategories(res.data)
+      } catch (error) {
         toast({
           title: "❌ Unable to fetch categories!!"
         })
-        return
       }
-      setCategories(res.data)
     })()
   }, [])
 
   useEffect(() => {
     if (category !== "") {
-      console.log(category)
       if (category != "all") {
         let specificArr = []
         blogsData.map((item) => {
@@ -102,29 +114,35 @@ const Page = () => {
   }, [category])
 
   const handleSubscribe = async () => {
-    if (emailForSubscribe.length == 0 || !isEmail(emailForSubscribe)) {
-      toast({
-        title: "❌ Enter valid email!!"
+    try {
+      if (emailForSubscribe.length == 0 || !isEmail(emailForSubscribe)) {
+        toast({
+          title: "❌ Enter valid email!!"
+        })
+        return
+      }
+      const req = await fetch(`/api/subscribe`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "applicaion/json"
+        },
+        body: JSON.stringify({ emailId: emailForSubscribe })
       })
-      return
-    }
-    const req = await fetch(`/api/subscribe`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "applicaion/json"
-      },
-      body: JSON.stringify({ emailId: emailForSubscribe })
-    })
-    const res = await req.json()
-    if(!res.success){
+      const res = await req.json()
+      if (!res.success) {
+        toast({
+          title: "❌ Unable to Subscribe!!"
+        })
+        return
+      }
+      toast({
+        title: "✅ Subscribed!!"
+      })
+    } catch (error) {
       toast({
         title: "❌ Unable to Subscribe!!"
       })
-      return
     }
-    toast({
-      title: "✅ Subscribed!!"
-    })
   }
 
 

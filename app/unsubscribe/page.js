@@ -1,30 +1,38 @@
 "use client"
+import { useToast } from '@/hooks/use-toast'
 import { useSearchParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
 const page = () => {
     const searchParams = useSearchParams()
     const emailId = searchParams.get('emailId')
-    const [status,setStatus] = useState({status:"❕",message:"Processing"})
+    const [status, setStatus] = useState({ status: "❕", message: "Processing" })
+    const { toast } = useToast()
 
     useEffect(() => {
         (async () => {
-            const req = await fetch(`/api/unsubscribe`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "applicaion/json"
-                },
-                body: JSON.stringify({ emailId: emailId })
-            })
-            const res = await req.json()
-            if (!res.success) {
+            try {
+                const req = await fetch(`/api/unsubscribe`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "applicaion/json"
+                    },
+                    body: JSON.stringify({ emailId: emailId })
+                })
+                const res = await req.json()
+                if (!res.success) {
+                    toast({
+                        title: "❌ Unable to Unsubscribe!!"
+                    })
+                    setStatus({ status: "❌", message: "Server Error" })
+                    return;
+                }
+                setStatus({ status: "✅", message: "Done.." })
+            } catch (error) {
                 toast({
                     title: "❌ Unable to Unsubscribe!!"
                 })
-                setStatus({status:"❌",message:"Server Error"})
-                return;
             }
-            setStatus({status:"✅",message:"Done.."})
         })()
     }, [])
 
