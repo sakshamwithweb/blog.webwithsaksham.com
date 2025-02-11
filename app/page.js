@@ -26,8 +26,8 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 
 const FilterPlaceholder = () => (
-  <div className='flex p-2 w-[150px] justify-center gap-5'>
-    <p className='text-lg font-bold'>Filter</p>
+  <div className='flex md:p-2 md:w-[150px] justify-center gap-5'>
+    <p className='text-lg font-bold hidden md:flex'>Filter</p>
     <Filter />
   </div>
 );
@@ -39,7 +39,8 @@ const Page = () => {
   const [categories, setCategories] = useState([])
   const [category, setCategory] = useState("")
   const [emailForSubscribe, setEmailForSubscribe] = useState("")
-  const [busySubscribeBtn,setBusySubscribeBtn] = useState(false)
+  const [busySubscribeBtn, setBusySubscribeBtn] = useState(false)
+  const [isTooltipOpen, setIsTooltipOpen] = useState(false)
   const { toast } = useToast()
 
   useEffect(() => {
@@ -165,7 +166,7 @@ const Page = () => {
       <h1 className='text-xl text-center font-bold'>Blogs</h1>
       <div className='w-full flex justify-around'>
         <Select value={category} onValueChange={(e) => setCategory(e)}>
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className="md:w-[180px] w-[80px] mt-6">
             <SelectValue placeholder={<FilterPlaceholder />} />
           </SelectTrigger>
           <SelectContent>
@@ -182,12 +183,20 @@ const Page = () => {
           <div className='flex items-center gap-2'>
             <div>
               <Label htmlFor="subscribe">Subscribe</Label>
-              <Input type="email" value={emailForSubscribe} onChange={(e) => { setEmailForSubscribe(e.target.value) }} name="subscribe" id="subscribe" placeholder="Enter Email id" />
+              <Input className="md:w-auto w-28" type="email" value={emailForSubscribe} onChange={(e) => { setEmailForSubscribe(e.target.value) }} name="subscribe" id="subscribe" placeholder="Enter Email id" />
             </div>
             <div>
               <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger><CircleHelp /></TooltipTrigger>
+                <Tooltip open={isTooltipOpen}>
+                  <TooltipTrigger asChild><CircleHelp onMouseEnter={() => setIsTooltipOpen(true)}
+                    onMouseLeave={() => setIsTooltipOpen(false)}
+                    onClick={() => {
+                      setIsTooltipOpen((prev) => !prev)
+                    }}
+                    onFocus={() => setIsTooltipOpen(true)}
+                    onBlur={() => setIsTooltipOpen(false)}
+                    tabIndex={0} 
+                    /></TooltipTrigger>
                   <TooltipContent>
                     <p>Get Email when new post is posted by Saksham!</p>
                   </TooltipContent>
