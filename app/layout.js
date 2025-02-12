@@ -3,6 +3,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/toaster"
 import Footer from "@/components/Footer";
+import ConsoleMessage from "../components/ConsoleMessage";
 
 export const metadata = {
   title: "Blog - Saksham Goswami",
@@ -17,7 +18,9 @@ export default function RootLayout({ children }) {
           defaultTheme="system"
           enableSystem>
           <Navbar />
-          {children}
+          <ConsoleMessage>
+            {children}
+          </ConsoleMessage>
           <Footer/>
           <Toaster />
         </ThemeProvider>
