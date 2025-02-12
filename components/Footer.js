@@ -19,7 +19,7 @@ const Footer = () => {
                 body: JSON.stringify({ question: question })
             })
             if (!req1.ok) {
-                throw new Error("Error during fetching Admin details!");
+                throw new Error("Error during sending question!");
             }
             const res1 = await req1.json()
             if (res1.success) {

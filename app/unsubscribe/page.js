@@ -20,7 +20,7 @@ const page = () => {
                     body: JSON.stringify({ emailId: emailId })
                 })
                 if (!req.ok) {
-                    throw new Error("Error during fetching Admin details!");
+                    throw new Error("Error during unsubscribing!");
                 }
                 const res = await req.json()
                 if (res.success) {

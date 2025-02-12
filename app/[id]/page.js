@@ -43,7 +43,7 @@ export default function Page() {
           body: JSON.stringify({ id: id })
         })
         if (!req.ok) {
-          throw new Error("Error during fetching Admin details!");
+          throw new Error("Error during fetching blog content!");
         }
         const res = await req.json()
         if (res.success) {

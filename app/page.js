@@ -54,7 +54,7 @@ const Page = () => {
           body: JSON.stringify({})
         })
         if (!req.ok) {
-          throw new Error("Error during fetching Admin details!");
+          throw new Error("Error during fetching Blogs!");
         }
         const res = await req.json()
         if (res.success) {
@@ -84,7 +84,7 @@ const Page = () => {
           body: JSON.stringify({})
         })
         if (!req.ok) {
-          throw new Error("Error during fetching Admin details!");
+          throw new Error("Error during fetching Blogs' category!");
         }
         const res = await req.json()
         if (res.success) {
@@ -131,7 +131,7 @@ const Page = () => {
         body: JSON.stringify({ emailId: emailForSubscribe })
       })
       if (!req.ok) {
-        throw new Error("Error during fetching Admin details!");
+        throw new Error("Error during subscribing!");
       }
       const res = await req.json()
       setBusySubscribeBtn(false)
