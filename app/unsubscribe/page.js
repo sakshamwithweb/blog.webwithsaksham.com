@@ -22,7 +22,8 @@ const page = () => {
                 const res = await req.json()
                 if (!res.success) {
                     toast({
-                        title: "❌ Unable to Unsubscribe!!"
+                        title: "❌ Something Went Wrong, Unable to Unsubscribe!",
+                        description: `Write your issue in footer!`,
                     })
                     setStatus({ status: "❌", message: "Server Error" })
                     return;
@@ -30,7 +31,8 @@ const page = () => {
                 setStatus({ status: "✅", message: "Done.." })
             } catch (error) {
                 toast({
-                    title: "❌ Unable to Unsubscribe!!"
+                    title: "❌ Something Went Wrong, Unable to Unsubscribe!",
+                    description: `Write your issue in footer!`,
                 })
             }
         })()

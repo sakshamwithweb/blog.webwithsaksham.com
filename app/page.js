@@ -60,13 +60,13 @@ const Page = () => {
         } else {
           toast({
             title: "❌ Something Went Wrong",
-            description: "Server Error!!",
+            description: `Write your issue in footer!`,
           })
         }
       } catch (error) {
         toast({
           title: "❌ Something Went Wrong",
-          description: "Server Error!!",
+          description: `Write your issue in footer!`,
         })
       }
     })()
@@ -86,14 +86,16 @@ const Page = () => {
         const res = await req.json()
         if (!res.success) {
           toast({
-            title: "❌ Unable to fetch categories!!"
+            title: "❌ Something Went Wrong, Unable to fetch categories!!",
+            description: `Write your issue in footer!`,
           })
           return
         }
         setCategories(res.data)
       } catch (error) {
         toast({
-          title: "❌ Unable to fetch categories!!"
+          title: "❌ Something Went Wrong, Unable to fetch categories!!",
+          description: `Write your issue in footer!`,
         })
       }
     })()
@@ -134,19 +136,22 @@ const Page = () => {
       const res = await req.json()
       if (!res.success) {
         toast({
-          title: "❌ Unable to Subscribe!!"
-        })
+          title: "❌ Something Went Wrong, Unable to Subscribe",
+          description: `Write your issue in footer!`,
+      })
         setBusySubscribeBtn(false)
         return
       }
       toast({
-        title: "✅ Subscribed!!"
+        title: "✅ Subscribed!!",
+        description:"You are successfully subscribed!"
       })
       setBusySubscribeBtn(false)
     } catch (error) {
       toast({
-        title: "❌ Unable to Subscribe!!"
-      })
+        title: "❌ Something Went Wrong, Unable to Subscribe!!",
+        description: `Write your issue in footer!`,
+    })
     }
   }
 
@@ -195,8 +200,8 @@ const Page = () => {
                     }}
                     onFocus={() => setIsTooltipOpen(true)}
                     onBlur={() => setIsTooltipOpen(false)}
-                    tabIndex={0} 
-                    /></TooltipTrigger>
+                    tabIndex={0}
+                  /></TooltipTrigger>
                   <TooltipContent>
                     <p>Get Email when new post is posted by Saksham!</p>
                   </TooltipContent>
@@ -223,7 +228,10 @@ const Page = () => {
                         toast({ description: `✅ Copied` });
                       })
                         .catch(() => {
-                          toast({ description: `❌ Something went wrong` });
+                          toast({
+                            title: "❌ Something Went Wrong",
+                            description: `Write your issue in footer!`,
+                        })
                         });
                     }}>Save Link<Link2Icon /></DropdownMenuItem>
                   </DropdownMenuContent>

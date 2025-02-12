@@ -45,15 +45,17 @@ export default function Page() {
         const res = await req.json()
         if (!res.success) {
           toast({
-            title: `❌ Either error or not found`,
-          })
+            title: "❌ Something Went Wrong",
+            description: `Write your issue in footer!`,
+        })
           return;
         }
         setBlogData(res.data)
       } catch (error) {
         toast({
-          title: `❌ Error at fetching Blog`,
-        })
+          title: "❌ Something Went Wrong",
+          description: `Write your issue in footer!`,
+      })
       }
     })()
   }, [])
