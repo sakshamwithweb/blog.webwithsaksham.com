@@ -49,23 +49,23 @@ const Page = () => {
         const req = await fetch(`/api/fetchAllBlogs`, {
           method: "POST",
           headers: {
-            "Content-Type": "applicaion/json"
+            "Content-Type": "application/json"
           },
           body: JSON.stringify({})
         })
+        if (!req.ok) {
+          throw new Error("Error during fetching Admin details!");
+        }
         const res = await req.json()
         if (res.success) {
           setBlogsData(res.data)
           setSelectedBlogData(res.data)
         } else {
-          toast({
-            title: "❌ Something Went Wrong",
-            description: `Write your issue in footer!`,
-          })
+          throw new Error("Something Went Wrong");
         }
       } catch (error) {
         toast({
-          title: "❌ Something Went Wrong",
+          title: `❌ ${error.message}`,
           description: `Write your issue in footer!`,
         })
       }
@@ -79,22 +79,22 @@ const Page = () => {
         const req = await fetch(`/api/fetchCategories`, {
           method: "POST",
           headers: {
-            "Content-Type": "applicaion/json"
+            "Content-Type": "application/json"
           },
           body: JSON.stringify({})
         })
-        const res = await req.json()
-        if (!res.success) {
-          toast({
-            title: "❌ Something Went Wrong, Unable to fetch categories!!",
-            description: `Write your issue in footer!`,
-          })
-          return
+        if (!req.ok) {
+          throw new Error("Error during fetching Admin details!");
         }
-        setCategories(res.data)
+        const res = await req.json()
+        if (res.success) {
+          setCategories(res.data)
+        } else {
+          throw new Error("Unable to fetch categories!");
+        }
       } catch (error) {
         toast({
-          title: "❌ Something Went Wrong, Unable to fetch categories!!",
+          title: `❌ ${error.message}`,
           description: `Write your issue in footer!`,
         })
       }
@@ -120,38 +120,34 @@ const Page = () => {
   const handleSubscribe = async () => {
     try {
       if (emailForSubscribe.length == 0 || !isEmail(emailForSubscribe)) {
-        toast({
-          title: "❌ Enter valid email!!"
-        })
-        return
+        throw new Error("Enter valid email");
       }
       setBusySubscribeBtn(true)
       const req = await fetch(`/api/subscribe`, {
         method: "POST",
         headers: {
-          "Content-Type": "applicaion/json"
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({ emailId: emailForSubscribe })
       })
-      const res = await req.json()
-      if (!res.success) {
-        toast({
-          title: "❌ Something Went Wrong, Unable to Subscribe",
-          description: `Write your issue in footer!`,
-      })
-        setBusySubscribeBtn(false)
-        return
+      if (!req.ok) {
+        throw new Error("Error during fetching Admin details!");
       }
-      toast({
-        title: "✅ Subscribed!!",
-        description:"You are successfully subscribed!"
-      })
+      const res = await req.json()
       setBusySubscribeBtn(false)
+      if (res.success) {
+        toast({
+          title: "✅ Subscribed!!",
+          description: "You are successfully subscribed!"
+        })
+      } else {
+        throw new Error("Unable to Subscribe");
+      }
     } catch (error) {
       toast({
-        title: "❌ Something Went Wrong, Unable to Subscribe!!",
+        title: `❌ ${error.message}`,
         description: `Write your issue in footer!`,
-    })
+      })
     }
   }
 
@@ -231,7 +227,7 @@ const Page = () => {
                           toast({
                             title: "❌ Something Went Wrong",
                             description: `Write your issue in footer!`,
-                        })
+                          })
                         });
                     }}>Save Link<Link2Icon /></DropdownMenuItem>
                   </DropdownMenuContent>

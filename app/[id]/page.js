@@ -38,24 +38,24 @@ export default function Page() {
         const req = await fetch(`/api/fetchBlog`, {
           method: "POST",
           headers: {
-            "Content-Type": "applicaion/json"
+            "Content-Type": "application/json"
           },
-          body: JSON.stringify({ id:id })
+          body: JSON.stringify({ id: id })
         })
-        const res = await req.json()
-        if (!res.success) {
-          toast({
-            title: "❌ Something Went Wrong",
-            description: `Write your issue in footer!`,
-        })
-          return;
+        if (!req.ok) {
+          throw new Error("Error during fetching Admin details!");
         }
-        setBlogData(res.data)
+        const res = await req.json()
+        if (res.success) {
+          setBlogData(res.data)
+        } else {
+          throw new Error("Something went wrong!");
+        }
       } catch (error) {
         toast({
-          title: "❌ Something Went Wrong",
+          title: `❌ ${error.message}`,
           description: `Write your issue in footer!`,
-      })
+        })
       }
     })()
   }, [])

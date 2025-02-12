@@ -14,27 +14,25 @@ const Footer = () => {
             const req1 = await fetch("/api/sendQuestion", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "applicaion/json"
+                    "Content-Type": "application/json"
                 },
                 body: JSON.stringify({ question: question })
             })
+            if (!req1.ok) {
+                throw new Error("Error during fetching Admin details!");
+            }
             const res1 = await req1.json()
             if (res1.success) {
                 toast({
                     title: "✅ Sent Successfully",
                     description: "Your message will be read by us.",
                 })
-                return
             } else {
-                toast({
-                    title: "❌ Something Went Wrong",
-                    description: `Write your issue in footer!`,
-                })
-                return
+                throw new Error("Something Went Wrong");
             }
         } catch (error) {
             toast({
-                title: "❌ Something Went Wrong",
+                title: `❌ ${error.message}`,
                 description: `Write your issue in footer!`,
             })
         }

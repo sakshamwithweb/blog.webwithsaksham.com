@@ -15,23 +15,23 @@ const page = () => {
                 const req = await fetch(`/api/unsubscribe`, {
                     method: "POST",
                     headers: {
-                        "Content-Type": "applicaion/json"
+                        "Content-Type": "application/json"
                     },
                     body: JSON.stringify({ emailId: emailId })
                 })
-                const res = await req.json()
-                if (!res.success) {
-                    toast({
-                        title: "❌ Something Went Wrong, Unable to Unsubscribe!",
-                        description: `Write your issue in footer!`,
-                    })
-                    setStatus({ status: "❌", message: "Server Error" })
-                    return;
+                if (!req.ok) {
+                    throw new Error("Error during fetching Admin details!");
                 }
-                setStatus({ status: "✅", message: "Done.." })
+                const res = await req.json()
+                if (res.success) {
+                    setStatus({ status: "✅", message: "Done.." })
+                } else {
+                    setStatus({ status: "❌", message: "Server Error" })
+                    throw new Error("Unable to Unsubscribe!");
+                }
             } catch (error) {
                 toast({
-                    title: "❌ Something Went Wrong, Unable to Unsubscribe!",
+                    title: `❌ ${error.message}`,
                     description: `Write your issue in footer!`,
                 })
             }
