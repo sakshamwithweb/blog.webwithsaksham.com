@@ -26,10 +26,10 @@ const page = () => {
                 if (res.success) {
                     setStatus({ status: "✅", message: "Done.." })
                 } else {
-                    setStatus({ status: "❌", message: "Server Error" })
                     throw new Error("Unable to Unsubscribe!");
                 }
             } catch (error) {
+                setStatus({ status: "❌", message: "Server Error" })
                 toast({
                     title: `❌ ${error.message}`,
                     description: `Write your issue in footer!`,
