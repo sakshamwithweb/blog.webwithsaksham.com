@@ -54,7 +54,7 @@ const Page = () => {
           body: JSON.stringify({})
         })
         if (!req.ok) {
-          throw new Error("Error while fetching Blogs!");
+          throw new Error(`Error ${req.status}: ${req.statusText}`);
         }
         const res = await req.json()
         if (res.success) {
@@ -84,7 +84,7 @@ const Page = () => {
           body: JSON.stringify({})
         })
         if (!req.ok) {
-          throw new Error("Error while fetching Blogs' category!");
+          throw new Error(`Error ${req.status}: ${req.statusText}`);
         }
         const res = await req.json()
         if (res.success) {
@@ -131,7 +131,7 @@ const Page = () => {
         body: JSON.stringify({ emailId: emailForSubscribe })
       })
       if (!req.ok) {
-        throw new Error("Error while subscribing!");
+        throw new Error(`Error ${req.status}: ${req.statusText}`);
       }
       const res = await req.json()
       setBusySubscribeBtn(false)
