@@ -20,7 +20,7 @@ const page = () => {
                     body: JSON.stringify({ emailId: emailId })
                 })
                 if (!req.ok) {
-                    throw new Error("Error during unsubscribing!");
+                    throw new Error("Error while unsubscribing!");
                 }
                 const res = await req.json()
                 if (res.success) {
