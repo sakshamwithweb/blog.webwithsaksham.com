@@ -12,8 +12,8 @@ const page = () => {
     useEffect(() => {
         (async () => {
             try {
-                const req = await fetch(`/api/unsubscribe`, {
-                    method: "POST",
+                const req = await fetch(`/api/subscribe`, {
+                    method: "DELETE",
                     headers: {
                         "Content-Type": "application/json"
                     },
