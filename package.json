@@ -26,6 +26,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "devtools-detect": "^4.0.2",
+    "isomorphic-dompurify": "^2.21.0",
     "lucide-react": "^0.469.0",
     "mongoose": "^8.9.2",
     "next": "15.1.2",
