@@ -141,7 +141,11 @@ const Page = () => {
           description: "You are successfully subscribed!"
         })
       } else {
-        throw new Error("Unable to Subscribe");
+        if (res?.message) {
+          throw new Error(res.message);
+        } else {
+          throw new Error("Unable to Subscribe");
+        }
       }
     } catch (error) {
       toast({

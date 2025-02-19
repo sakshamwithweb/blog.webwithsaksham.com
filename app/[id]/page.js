@@ -49,7 +49,11 @@ export default function Page() {
         if (res.success) {
           setBlogData(res.data)
         } else {
-          throw new Error("Something went wrong!");
+          if (res?.message) {
+            throw new Error(res.message);
+          } else {
+            throw new Error("Unable to fetch blog");
+          }
         }
       } catch (error) {
         toast({

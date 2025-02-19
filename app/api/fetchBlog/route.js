@@ -9,10 +9,9 @@ export async function POST(req) {
         const sanitizedId = DOMPurify.sanitize(id);
         await connectDb()
         const getBlog = await Post.findOne({ _id: sanitizedId })
-        if (!getBlog) throw new Error("No post is there");        
+        if (!getBlog) return NextResponse.json({ success: false, message: "No Post Found!" })
         return NextResponse.json({ success: true, data: getBlog })
     } catch (error) {
-        console.log(error.message)
         return NextResponse.json({ success: false, message: "Server Error!" })
     }
 }
