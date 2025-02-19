@@ -9,7 +9,7 @@ export async function POST(req) {
         const sanitizedId = DOMPurify.sanitize(id);
         await connectDb()
         const getBlog = await Post.findOne({ _id: sanitizedId })
-        if (!getBlog) return NextResponse.json({ success: false, message: "No Post is there!" })
+        if (!getBlog) throw new Error("No post is there");        
         return NextResponse.json({ success: true, data: getBlog })
     } catch (error) {
         console.log(error.message)

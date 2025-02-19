@@ -6,7 +6,7 @@ export async function POST() {
     try {
         await connectDb()
         const posts = await Post.find({})
-        if (!posts) return NextResponse.json({ success: false })
+        if (!posts) throw new Error("not found");        
         return NextResponse.json({ success: true, data: posts })
     } catch (error) {
         return NextResponse.json({ success: false })

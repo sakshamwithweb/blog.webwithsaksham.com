@@ -9,7 +9,7 @@ export async function POST(req) {
         if (!emailId || emailId?.trim()?.length == 0 || !isEmail(emailId)) throw new Error("Enter valid email");
         await connectDb()
         const checkExist = await SubscribeEmail.findOne({ email: emailId })
-        if (checkExist) return NextResponse.json({ success: false })
+        if (checkExist) throw new Error("already exist");
         const newDoc = new SubscribeEmail({
             email: emailId
         })
