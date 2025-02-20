@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/hooks/use-toast"
 import DOMPurify from "isomorphic-dompurify";
+import { Tooltip as ReactTooltip } from 'react-tooltip'
 
 const Footer = () => {
     const [question, setQuestion] = useState("")
@@ -59,13 +60,13 @@ const Footer = () => {
                 <div className='md:w-1/2 w-1/3 flex flex-col justify-center items-center'>
                     <h1 className='text-2xl hidden md:block'>Connect with me:</h1>
                     <div className='flex flex-col gap-1 items-center'>
-                        <a target='_blank' href='https://github.com/sakshamwithweb'>
+                        <a data-tooltip-id="github" target='_blank' href='https://github.com/sakshamwithweb'>
                             <img src='/github.png' alt="github" className='h-10' />
                         </a>
-                        <a href='https://www.linkedin.com/in/gourav-krishn-goswami' target='_blank'>
+                        <a data-tooltip-id="linkedin" href='https://www.linkedin.com/in/gourav-krishn-goswami' target='_blank'>
                             <img src='/linkedin.png' alt="linkedin" className='h-10' />
                         </a>
-                        <a href='mailto:contact@webwithsaksham.com' target='_blank'>
+                        <a data-tooltip-id="email" href='mailto:contact@webwithsaksham.com' target='_blank'>
                             <img src='/mail.png' alt="mail" className='h-10' />
                         </a>
                     </div>
@@ -79,6 +80,18 @@ const Footer = () => {
                 </div>
             </div>
             <div className='flex justify-center items-center'><span>Copyright &copy;{new Date().getFullYear()} All rights reserved&nbsp;</span><span className='hidden md:block'>| Made by Saksham Goswami.</span></div>
+            <ReactTooltip
+                id="github"
+                content="Github"
+            />
+            <ReactTooltip
+                id="linkedin"
+                content="Linkedin"
+            />
+            <ReactTooltip
+                id="email"
+                content="Email"
+            />
         </footer>
     )
 }

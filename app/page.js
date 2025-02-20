@@ -2,9 +2,10 @@
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { useToast } from '@/hooks/use-toast'
-import { CircleHelp, EllipsisVertical, Filter, Kanban, Link2Icon } from 'lucide-react'
+import { CircleHelp, EllipsisVertical, Filter, Link2Icon } from 'lucide-react'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
+import { Tooltip as ReactTooltip } from 'react-tooltip'
 import {
   Select,
   SelectContent,
@@ -15,19 +16,12 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import isEmail from 'validator/lib/isEmail';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 
 const FilterPlaceholder = () => (
-  <div className='flex md:p-2 md:w-[150px] justify-center gap-5'>
-    <p className='text-lg font-bold hidden md:flex'>Filter</p>
+  <div className='flex md:p-2 justify-center gap-5'>
     <Filter />
   </div>
 );
@@ -40,7 +34,6 @@ const Page = () => {
   const [category, setCategory] = useState("")
   const [emailForSubscribe, setEmailForSubscribe] = useState("")
   const [busySubscribeBtn, setBusySubscribeBtn] = useState(false)
-  const [isTooltipOpen, setIsTooltipOpen] = useState(false)
   const { toast } = useToast()
 
   useEffect(() => {
@@ -71,7 +64,6 @@ const Page = () => {
       }
     })()
   }, [])
-
 
   useEffect(() => {
     (async () => {
@@ -155,7 +147,6 @@ const Page = () => {
     }
   }
 
-
   if (!blogsData) {
     return <p className='m-2 text-center'>Loading...</p>
   } else if (blogsData.length == 0) {
@@ -171,7 +162,7 @@ const Page = () => {
       <h1 className='text-xl text-center font-bold'>Blogs</h1>
       <div className='w-full flex justify-around'>
         <Select value={category} onValueChange={(e) => setCategory(e)}>
-          <SelectTrigger className="md:w-[180px] w-[80px] mt-6">
+          <SelectTrigger data-tooltip-id="filter" className="w-[80px] mt-6">
             <SelectValue placeholder={<FilterPlaceholder />} />
           </SelectTrigger>
           <SelectContent>
@@ -184,32 +175,12 @@ const Page = () => {
             </SelectGroup>
           </SelectContent>
         </Select>
-        <div className=''>
-          <div className='flex items-center gap-2'>
-            <div>
-              <Label htmlFor="subscribe">Subscribe</Label>
-              <Input className="md:w-auto w-28" type="email" value={emailForSubscribe} onChange={(e) => { setEmailForSubscribe(e.target.value) }} name="subscribe" id="subscribe" placeholder="Enter Email id" />
-            </div>
-            <div>
-              <TooltipProvider>
-                <Tooltip open={isTooltipOpen}>
-                  <TooltipTrigger asChild><CircleHelp onMouseEnter={() => setIsTooltipOpen(true)}
-                    onMouseLeave={() => setIsTooltipOpen(false)}
-                    onClick={() => {
-                      setIsTooltipOpen((prev) => !prev)
-                    }}
-                    onFocus={() => setIsTooltipOpen(true)}
-                    onBlur={() => setIsTooltipOpen(false)}
-                    tabIndex={0}
-                  /></TooltipTrigger>
-                  <TooltipContent>
-                    <p>Get Email when new post is posted by Saksham!</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </div>
+        <div className='flex items-center' data-tooltip-id="subscribe-what">
+          <div>
+            <Label htmlFor="subscribe">Subscribe</Label>
+            <Input className="md:w-auto w-28" type="email" value={emailForSubscribe} onChange={(e) => { setEmailForSubscribe(e.target.value) }} name="subscribe" id="subscribe" placeholder="Enter Email id" />
           </div>
-          <Button disabled={busySubscribeBtn} className="w-14" onClick={handleSubscribe}>Save</Button>
+          <Button disabled={busySubscribeBtn} className="w-14 mt-6" onClick={handleSubscribe}>Save</Button>
         </div>
       </div>
       <div className='flex flex-col gap-6 w-full items-center'>
@@ -221,7 +192,7 @@ const Page = () => {
               </div>
               <div className='absolute top-4 right-2'>
                 <DropdownMenu>
-                  <DropdownMenuTrigger><EllipsisVertical /></DropdownMenuTrigger>
+                  <DropdownMenuTrigger data-tooltip-id="menu"><EllipsisVertical /></DropdownMenuTrigger>
                   <DropdownMenuContent>
                     <DropdownMenuItem onClick={() => {
                       navigator.clipboard.writeText(`https://blog.webwithsaksham.com/${item._id}`).then(() => {
@@ -241,6 +212,19 @@ const Page = () => {
           )
         })}
       </div>
+
+      <ReactTooltip
+        id="filter"
+        content="Filter"
+      />
+      <ReactTooltip
+        id="subscribe-what"
+        content="Get Email when new post is posted by Saksham!"
+      />
+      <ReactTooltip
+        id="menu"
+        content="Menu"
+      />
     </div>
   )
 }

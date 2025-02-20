@@ -11,6 +11,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { ModeToggle } from './ui/mode'
+import { Tooltip as ReactTooltip } from 'react-tooltip'
 
 const Navbar = () => {
   return (
@@ -19,10 +20,10 @@ const Navbar = () => {
         <Link href={"http://webwithsaksham.com"}>SakshamWithWeb</Link>
       </div>
       <div className='flex'>
-        <span className='hidden md:block'> <ModeToggle /></span>
+        <span data-tooltip-id="mode-toggle" className='hidden md:block'> <ModeToggle /></span>
         {/*For Smaller device*/}
         <div className='md:hidden'>
-          <span className='mx-4'> <ModeToggle /></span>
+          <span data-tooltip-id="mode-toggle" className='mx-4'> <ModeToggle /></span>
           <Sheet>
             <SheetTrigger aria-label='hamburger'>
               <RxHamburgerMenu />
@@ -43,6 +44,10 @@ const Navbar = () => {
           <li><Link href={`/`}>Home</Link></li>
         </ul>
       </div>
+      <ReactTooltip
+        id="mode-toggle"
+        content="Switch the mode"
+      />
     </nav >
   )
 }
