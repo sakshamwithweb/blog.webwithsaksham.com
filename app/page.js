@@ -19,6 +19,7 @@ import isEmail from 'validator/lib/isEmail';
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
+import { Loader } from '@/components/Loader'
 
 const FilterPlaceholder = () => (
   <div className='flex md:p-2 justify-center gap-5'>
@@ -148,7 +149,7 @@ const Page = () => {
   }
 
   if (!blogsData) {
-    return <p className='m-2 text-center'>Loading...</p>
+    return <Loader/>
   } else if (blogsData.length == 0) {
     return (
       <div className='flex justify-center items-center gap-5'>

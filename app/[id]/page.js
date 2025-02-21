@@ -10,6 +10,7 @@ import remarkRehype from 'remark-rehype'
 import { unified } from 'unified'
 import rehypePrettyCode from "rehype-pretty-code";
 import { transformerCopyButton } from '@rehype-pretty/transformers'
+import { Loader } from "@/components/Loader";
 
 function formatTimestamp(timestamp) {
   const date = new Date(timestamp);
@@ -91,7 +92,7 @@ export default function Page() {
 
 
   if (!blogdata) {
-    return <p className="text-center text-3xl">Loading...</p>
+    return <Loader/>
   }
   return (
     <div className="min-h-screen flex justify-center">
