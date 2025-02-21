@@ -1,6 +1,6 @@
 "use client"
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { RxHamburgerMenu } from "react-icons/rx";
 import {
   Sheet,
