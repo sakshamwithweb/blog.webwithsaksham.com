@@ -48,6 +48,7 @@ const Page = () => {
           body: JSON.stringify({})
         })
         if (!req.ok) {
+          console.log(req)
           throw new Error(`Error ${req.status}: ${req.statusText}`);
         }
         const res = await req.json()
