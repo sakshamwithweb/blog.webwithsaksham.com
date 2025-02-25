@@ -1,5 +1,6 @@
 "use client"
 import { useToast } from '@/hooks/use-toast'
+import { getStatusMessage } from '@/lib/statusMessage'
 import { useSearchParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
@@ -20,7 +21,8 @@ const page = () => {
                     body: JSON.stringify({ emailId: emailId })
                 })
                 if (!req.ok) {
-                    throw new Error(`Error ${req.status}: ${req.statusText}`);
+                    const statusText = await getStatusMessage(req.status)
+                    throw new Error(`Error ${req.status}: ${statusText}`);
                 }
                 const res = await req.json()
                 if (res.success) {

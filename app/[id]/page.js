@@ -11,6 +11,7 @@ import { unified } from 'unified'
 import rehypePrettyCode from "rehype-pretty-code";
 import { transformerCopyButton } from '@rehype-pretty/transformers'
 import { Loader } from "@/components/Loader";
+import { getStatusMessage } from "@/lib/statusMessage";
 
 function formatTimestamp(timestamp) {
   const date = new Date(timestamp);
@@ -44,7 +45,8 @@ export default function Page() {
           body: JSON.stringify({ id: id })
         })
         if (!req.ok) {
-          throw new Error(`Error ${req.status}: ${req.statusText}`);
+          const statusText = await getStatusMessage(req.status)
+          throw new Error(`Error ${req.status}: ${statusText}`);
         }
         const res = await req.json()
         if (res.success) {
@@ -92,7 +94,7 @@ export default function Page() {
 
 
   if (!blogdata) {
-    return <Loader/>
+    return <Loader />
   }
   return (
     <div className="min-h-screen flex justify-center">

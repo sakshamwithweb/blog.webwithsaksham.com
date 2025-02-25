@@ -20,6 +20,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Loader } from '@/components/Loader'
+import { getStatusMessage } from '@/lib/statusMessage'
 
 const FilterPlaceholder = () => (
   <div className='flex md:p-2 justify-center gap-5'>
@@ -48,8 +49,8 @@ const Page = () => {
           body: JSON.stringify({})
         })
         if (!req.ok) {
-          console.log(req)
-          throw new Error(`Error ${req.status}: ${req.statusText}`);
+          const statusText = await getStatusMessage(req.status)
+          throw new Error(`Error ${req.status}: ${statusText}`);
         }
         const res = await req.json()
         if (res.success) {
@@ -78,7 +79,8 @@ const Page = () => {
           body: JSON.stringify({})
         })
         if (!req.ok) {
-          throw new Error(`Error ${req.status}: ${req.statusText}`);
+          const statusText = await getStatusMessage(req.status)
+          throw new Error(`Error ${req.status}: ${statusText}`);
         }
         const res = await req.json()
         if (res.success) {
@@ -125,7 +127,8 @@ const Page = () => {
         body: JSON.stringify({ emailId: emailForSubscribe })
       })
       if (!req.ok) {
-        throw new Error(`Error ${req.status}: ${req.statusText}`);
+        const statusText = await getStatusMessage(req.status)
+        throw new Error(`Error ${req.status}: ${statusText}`);
       }
       const res = await req.json()
       setBusySubscribeBtn(false)
@@ -150,7 +153,7 @@ const Page = () => {
   }
 
   if (!blogsData) {
-    return <Loader/>
+    return <Loader />
   } else if (blogsData.length == 0) {
     return (
       <div className='flex justify-center items-center gap-5'>
