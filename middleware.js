@@ -27,7 +27,7 @@ export async function middleware(req) {
             limiter: Ratelimit.fixedWindow(currentRateLimit.requestsPerDuration, `${currentRateLimit.durationInMinute * 60} s`),
         });
         const ip = req.ip || req.headers.get("x-forwarded-for") || "unknown";
-        const rateLimitKey = `${pathname}-${ip}`
+        const rateLimitKey = `blog-${pathname}-${ip}`
         const { success, limit, remaining, reset } = await ratelimit.limit(rateLimitKey);
         const response = success ? NextResponse.next() : new NextResponse(`Too many requests`, { status: 429 });
         response.headers.set("X-RateLimit-Limit", limit);
