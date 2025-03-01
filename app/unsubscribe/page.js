@@ -1,5 +1,6 @@
 "use client"
 import { useToast } from '@/hooks/use-toast'
+import { generateToken } from '@/lib/generateToken'
 import { getStatusMessage } from '@/lib/statusMessage'
 import { useSearchParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
@@ -13,12 +14,14 @@ const page = () => {
     useEffect(() => {
         (async () => {
             try {
+                const { token, id } = await generateToken()
                 const req = await fetch(`/api/subscribe`, {
                     method: "DELETE",
                     headers: {
-                        "Content-Type": "application/json"
+                        "Content-Type": "application/json",
+                        'Authorization': `Bearer ${token}`
                     },
-                    body: JSON.stringify({ emailId: emailId })
+                    body: JSON.stringify({ emailId: emailId, id })
                 })
                 if (!req.ok) {
                     const statusText = await getStatusMessage(req.status)

@@ -12,6 +12,7 @@ import rehypePrettyCode from "rehype-pretty-code";
 import { transformerCopyButton } from '@rehype-pretty/transformers'
 import { Loader } from "@/components/Loader";
 import { getStatusMessage } from "@/lib/statusMessage";
+import { generateToken } from "@/lib/generateToken";
 
 function formatTimestamp(timestamp) {
   const date = new Date(timestamp);
@@ -29,7 +30,7 @@ function formatTimestamp(timestamp) {
 }
 
 export default function Page() {
-  const { id } = useParams();
+  const postId = useParams();
   const [blogdata, setBlogData] = useState(null)
   const { toast } = useToast()
   const [htmlContent, setHtmlContent] = useState("")
@@ -37,12 +38,14 @@ export default function Page() {
   useEffect(() => {
     (async () => {
       try {
+        const { token, id } = await generateToken()
         const req = await fetch(`/api/fetchBlog`, {
           method: "POST",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
           },
-          body: JSON.stringify({ id: id })
+          body: JSON.stringify({ postId:postId.id, id })
         })
         if (!req.ok) {
           const statusText = await getStatusMessage(req.status)

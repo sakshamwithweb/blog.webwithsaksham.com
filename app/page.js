@@ -21,6 +21,7 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Loader } from '@/components/Loader'
 import { getStatusMessage } from '@/lib/statusMessage'
+import { generateToken } from '@/lib/generateToken'
 
 const FilterPlaceholder = () => (
   <div className='flex md:p-2 justify-center gap-5'>
@@ -41,12 +42,14 @@ const Page = () => {
   useEffect(() => {
     (async () => {
       try {
+        const { token, id } = await generateToken()
         const req = await fetch(`/api/fetchAllBlogs`, {
           method: "POST",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
           },
-          body: JSON.stringify({})
+          body: JSON.stringify({ id })
         })
         if (!req.ok) {
           const statusText = await getStatusMessage(req.status)
@@ -71,12 +74,14 @@ const Page = () => {
   useEffect(() => {
     (async () => {
       try {
+        const { token, id } = await generateToken()
         const req = await fetch(`/api/fetchCategories`, {
           method: "POST",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
           },
-          body: JSON.stringify({})
+          body: JSON.stringify({ id })
         })
         if (!req.ok) {
           const statusText = await getStatusMessage(req.status)
@@ -119,12 +124,14 @@ const Page = () => {
         throw new Error("Enter valid email");
       }
       setBusySubscribeBtn(true)
+      const { token, id } = await generateToken()
       const req = await fetch(`/api/subscribe`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ emailId: emailForSubscribe })
+        body: JSON.stringify({ emailId: emailForSubscribe, id })
       })
       if (!req.ok) {
         const statusText = await getStatusMessage(req.status)
