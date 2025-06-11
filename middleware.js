@@ -9,12 +9,12 @@ const redis = new Redis({
 })
 
 const allRateLimits = {
-    "/api/fetchAllBlogs": { requestsPerDuration: 10, durationInMinute: 5 },
-    "/api/fetchBlog": { requestsPerDuration: 5, durationInMinute: 5 },
-    "/api/fetchCategories": { requestsPerDuration: 10, durationInMinute: 5 },
+    "/api/fetchAllBlogs": { requestsPerDuration: 10, durationInMinute: 1 },
+    "/api/fetchBlog": { requestsPerDuration: 5, durationInMinute: 1 },
+    "/api/fetchCategories": { requestsPerDuration: 10, durationInMinute: 1 },
     "/api/sendQuestion": { requestsPerDuration: 1, durationInMinute: 5 },
     "/api/subscribe": { requestsPerDuration: 1, durationInMinute: 10 },
-    "default": { requestsPerDuration: 5, durationInMinute: 5 },
+    "default": { requestsPerDuration: 20, durationInMinute: 1 },
 };
 
 export async function middleware(req) {
